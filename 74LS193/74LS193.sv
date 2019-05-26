@@ -13,38 +13,38 @@ module Counter_74193(
 	reg co_r = 1'b1;
 	reg [3:0] cont = 0;
 	
-  always @(posedge up)
+  	always @(posedge up)
     	begin
-          if(~clr && load)
-            begin
-              if(up && down)
-          		cont <= cont + 1;
-              else if(up && ~down && cont[0])
-                cont <= cont + 2;
-            end
+            if(~clr && load)
+                begin
+                    if(up && down)
+                        cont <= cont + 1;
+                    else if(up && ~down && cont[0])
+                        cont <= cont + 2;
+                end
         end
 
-  always @(posedge down)
+  	always @(posedge down)
     	begin
-          if(~clr && load)
-            begin
-              if(down && up)
-              	cont <= cont - 1;
-              else if (down && ~up && ~cont[0])
-                cont <= cont - 2;
-            end
+          	if(~clr && load)
+            	begin
+              		if(down && up)
+              			cont <= cont - 1;
+              		else if (down && ~up && ~cont[0])
+                		cont <= cont - 2;
+            	end
         end
   
-  always @(posedge clr or negedge load or data_in)
-    begin
-      if (clr) 
-       	cont = 0;
-      else if(~load)
-        cont = data_in;
-    end
+  	always @(posedge clr or negedge load or data_in)
+    	begin
+      		if (clr) 
+       			cont = 0;
+      		else if(~load)
+        		cont = data_in;
+    	end
 
-  assign data_out = cont;
-  assign bo = ~(~down & ~cont[0] & ~cont[1] & ~cont[2] & ~cont[3]);
-  assign co = ~(~up & cont[0] & cont[1] & cont[2] & cont[3]);
+  	assign data_out = cont;
+  	assign bo = ~(~down & ~cont[0] & ~cont[1] & ~cont[2] & ~cont[3]);
+  	assign co = ~(~up & cont[0] & cont[1] & cont[2] & cont[3]);
 
 endmodule
